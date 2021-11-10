@@ -2,7 +2,10 @@ package com.bridgelabz;
 
 public class ParkingLotSystem {
 
+    private Object vehicle;
+
     public boolean vehicleParking(Object vehicle) {
-        return false;
+        this.vehicle = vehicle;
+        return true;
     }
 }
