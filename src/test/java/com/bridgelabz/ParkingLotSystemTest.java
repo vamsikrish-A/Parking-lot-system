@@ -18,35 +18,56 @@ public class ParkingLotSystemTest {
 
     @Test
     public void givenCarToParkingLot_WhenDriverAbleToParkTheCar_ShouldBeFalse() {
-        parkingLotSystem.vehicleParking(vehicle);
-        boolean Park = parkingLotSystem.vehicleParking(vehicle);
-        Assertions.assertFalse(Park);
+        try {
+            parkingLotSystem.vehicleParking(vehicle);
+            boolean isParked = parkingLotSystem.isVehicleParked(vehicle);
+            Assertions.assertFalse(isParked);
+        } catch (ParkingLotException e) {
+            e.printStackTrace();
+        }
+
 
     }
 
     @Test
     public void givenCarToParkingLot_WhenDriverAbleToParkTheCar_ShouldBeTrue() {
-        boolean Park = parkingLotSystem.vehicleParking(vehicle);
-        Assertions.assertTrue(Park);
+        try {
+             parkingLotSystem.vehicleParking(vehicle);
+        } catch (ParkingLotException e) {
+            Assertions.assertEquals("Parking is full", e.getMessage());
+            e.printStackTrace();
+        }
 
     }
 
-    @Test
-    public void givenCarToParkingLot_WhenDriverWantToUnParkTheCar_ShouldReturnFalse() {
-        parkingLotSystem.vehicleUnParking(vehicle);
-        boolean unParkVehicle = parkingLotSystem.vehicleUnParking(vehicle);
-        Assertions.assertFalse(unParkVehicle);
-    }
+
     @Test
     public void givenCarToParkingLot_WhenDriverWantsToUnParkTheCar_ShouldReturnTrue() {
-        boolean unParkVehicle = parkingLotSystem.vehicleParking(vehicle);
-        Assertions.assertTrue(unParkVehicle);
+        try {
+            parkingLotSystem.vehicleParking(vehicle);
+            parkingLotSystem.vehicleUnParking(vehicle);
+            boolean vehicleUnParked = parkingLotSystem.isVehicleUnParked(vehicle);
+            Assertions.assertTrue(vehicleUnParked);
+        } catch (ParkingLotException e) {
+            e.printStackTrace();
+        }
     }
 
     @Test
-    public void givenAVehicle_WhenUnParked_ShouldReturnTrue() {
-        parkingLotSystem.vehicleParking(vehicle);
-        boolean unParking = parkingLotSystem.vehicleUnParking(vehicle);
-        Assertions.assertTrue(unParking);
+    public void givenAVehicle_WhenUnParked_ShouldReturnFalse() {
+        try {
+            parkingLotSystem.vehicleParking(vehicle);
+        } catch (ParkingLotException e) {
+            e.printStackTrace();
+        }
+        try {
+             parkingLotSystem.vehicleUnParking(vehicle);
+             parkingLotSystem.isVehicleUnParked(vehicle);
+
+        } catch (ParkingLotException e) {
+            Assertions.assertEquals("Parking Lot is Full.", e.getMessage());
+
+            e.printStackTrace();
+        }
     }
 }
