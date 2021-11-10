@@ -10,6 +10,10 @@ public class ParkingLotSystem {
     }
 
     public boolean vehicleUnParking(Object  vehicle) {
+        if (this.vehicle == vehicle) {
+            vehicle = null;
+            return true;
+        }
         return false;
     }
 }
