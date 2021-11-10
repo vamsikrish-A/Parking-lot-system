@@ -21,4 +21,12 @@ public class ParkingLotSystemTest {
         Assertions.assertTrue(Park);
 
     }
+
+    @Test
+    public void givenCarToParkingLot_WhenDriverWantToUnParkTheCar_ShouldReturnFalse() {
+        ParkingLotSystem parkingLotSystem = new ParkingLotSystem();
+        Object vehicle = new Object();
+        boolean unParkVehicle = parkingLotSystem.vehicleUnParking(vehicle);
+        Assertions.assertTrue(unParkVehicle);
+    }
 }
