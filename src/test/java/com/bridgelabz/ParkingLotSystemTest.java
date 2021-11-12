@@ -12,7 +12,7 @@ public class ParkingLotSystemTest {
 
     @BeforeEach
     public void setUp() {
-        parkingLotSystem = new ParkingLotSystem();
+        parkingLotSystem = new ParkingLotSystem(1);
         vehicle = new Object();
     }
 
@@ -69,5 +69,19 @@ public class ParkingLotSystemTest {
 
             e.printStackTrace();
         }
+    }
+
+    @Test
+    public void givenVehiclesToParkingLot_WhenTheLotIsFull_ShouldReturnFullSign() {
+        ParkingLotOwner owner = new ParkingLotOwner();
+        parkingLotSystem.registeredOwner(owner);
+        try {
+            parkingLotSystem.vehicleParking(vehicle);
+            parkingLotSystem.vehicleParking(new Object());
+        } catch (ParkingLotException e) { }
+        boolean capacityFull = owner.isCapacityFull();
+        Assertions.assertTrue(capacityFull);
+
+
     }
 }
