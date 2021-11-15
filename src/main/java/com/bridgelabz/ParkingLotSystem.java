@@ -34,6 +34,8 @@ public class ParkingLotSystem {
             security.capacityIsFull();
             throw new ParkingLotException("Parking Lot is Full.");
         }
+        if (isVehicleParked(vehicle))
+            throw  new ParkingLotException("Vehicle is already parked");
         this.vehicles.add(vehicle);
 
     }
