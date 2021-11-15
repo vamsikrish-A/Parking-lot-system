@@ -1,6 +1,6 @@
 package com.bridgelabz;
 
-public class ParkingLotOwner {
+public class ParkingLotOwner implements ParkingLotObserver{
 
 
     private boolean isFullCapacity;

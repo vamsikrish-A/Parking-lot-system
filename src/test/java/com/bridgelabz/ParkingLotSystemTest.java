@@ -29,11 +29,12 @@ public class ParkingLotSystemTest {
 
     @Test
     public void givenCarToParkingLot_WhenDriverAbleToParkTheCar_ShouldBeTrue() {
-        Assertions.assertThrows(NullPointerException.class, ()->{
+        Assertions.assertDoesNotThrow(()->{
             parkingLotSystem.vehicleParking(vehicle);
-            parkingLotSystem.vehicleParking(vehicle);
-            parkingLotSystem.isVehicleParked(vehicle);
         });
+        boolean isParked = parkingLotSystem.isVehicleParked(vehicle);
+
+        Assertions.assertTrue(isParked);
 
     }
 
@@ -62,8 +63,8 @@ public class ParkingLotSystemTest {
     @Test
     public void givenVehiclesToParkingLot_WhenTheLotIsFull_ShouldReturnFullSign() {
         ParkingLotOwner owner = new ParkingLotOwner();
-        parkingLotSystem.registeredOwner(owner);
-        Assertions.assertThrows(NullPointerException.class, ()->{
+        parkingLotSystem.registeredObserver(owner);
+        Assertions.assertThrows(ParkingLotException.class, ()->{
             parkingLotSystem.vehicleParking(vehicle);
             parkingLotSystem.vehicleParking(new Object());
             parkingLotSystem.vehicleParking(new Object());
@@ -89,10 +90,10 @@ public class ParkingLotSystemTest {
 
     @Test
     public void givenParkingLotIsFull_ShouldReturnToAirportSecurity()  {
-        ParkingLotOwner owner = new ParkingLotOwner();
-        parkingLotSystem.registeredOwner(owner);
+//        ParkingLotOwner owner = new ParkingLotOwner();
+//        parkingLotSystem.registeredObserver(owner);
         AirportSecurity airportSecurity = new AirportSecurity();
-        parkingLotSystem.registeredSecurity(airportSecurity);
+        parkingLotSystem.registeredObserver(airportSecurity);
         Assertions.assertThrows(ParkingLotException.class,()-> {
             parkingLotSystem.vehicleParking(vehicle);
             parkingLotSystem.vehicleParking(new Object());
