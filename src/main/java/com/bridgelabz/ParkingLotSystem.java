@@ -61,6 +61,10 @@ public class ParkingLotSystem {
             return false;
         if (this.vehicles.contains(vehicle)){
             this.vehicles.remove(vehicle);
+            for (ParkingLotObserver observer: observers) {
+                observer.capacityIsAvailable();
+
+            }
             return true;
         }
         return false;
