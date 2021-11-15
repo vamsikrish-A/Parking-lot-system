@@ -12,7 +12,7 @@ public class ParkingLotSystemTest {
 
     @BeforeEach
     public void setUp() {
-        parkingLotSystem = new ParkingLotSystem(1);
+        parkingLotSystem = new ParkingLotSystem(2);
         vehicle = new Object();
     }
 
@@ -83,5 +83,17 @@ public class ParkingLotSystemTest {
         Assertions.assertTrue(capacityFull);
 
 
+    }
+    @Test
+    public void givenCapacityIs2_ShouldBeAbleToPrk2Vehicles() {
+        Object vehicle2 = new Object();
+        parkingLotSystem.setCapacity(2);
+        try {
+            parkingLotSystem.vehicleParking(vehicle);
+            parkingLotSystem.vehicleParking(vehicle2);
+            boolean isParked1 = parkingLotSystem.isVehicleParked(vehicle);
+            boolean isParked2 = parkingLotSystem.isVehicleParked(vehicle2);
+            Assertions.assertTrue(isParked1 && isParked2);
+        } catch (ParkingLotException e) { }
     }
 }

@@ -10,6 +10,6 @@ public class ParkingLotOwner {
     }
 
     public boolean isCapacityFull() {
-        return isFullCapacity;
+        return this.isFullCapacity;
     }
 }

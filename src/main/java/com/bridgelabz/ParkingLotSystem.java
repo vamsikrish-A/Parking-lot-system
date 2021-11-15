@@ -1,14 +1,17 @@
 package com.bridgelabz;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class ParkingLotSystem {
 
-    private final int actualCapacity;
+    private int actualCapacity;
     private int currentCapacity;
-    private Object vehicle;
+    private List vehicles;
     private ParkingLotOwner owner;
 
     public ParkingLotSystem(int capacity) {
-        this.currentCapacity = 0;
+        this.vehicles = new ArrayList();
         this.actualCapacity = capacity;
     }
 
@@ -16,43 +19,46 @@ public class ParkingLotSystem {
         this.owner = owner;
     }
 
+    public void setCapacity(int capacity) {
+        this.actualCapacity = capacity;
+    }
+
 
     public void vehicleParking(Object vehicle) throws ParkingLotException {
-        if (this.currentCapacity == this.actualCapacity) {
+        if (this.vehicles.size() == this.actualCapacity) {
             owner.capacityIsFull();
             throw new ParkingLotException("Parking Lot is Full.");
         }
         this.currentCapacity++;
-        this.vehicle = vehicle;
+        this.vehicles.add(vehicle);
 
     }
 
     public void vehicleUnParking(Object  vehicle) throws ParkingLotException {
-        if (this.vehicle != null)
+        if (this.vehicles != null)
             throw new ParkingLotException("Parking Lot is Full.");
-        if (this.vehicle.equals(vehicle) ) {
+        if (this.vehicles.equals(vehicle) ) {
             vehicle = null;
             throw new ParkingLotException("Parking Lot is Empty");
         }
     }
 
     public boolean isVehicleParked(Object vehicle) {
-        if (this.vehicle != null)
-            return false;
-        if (this.vehicle.equals(vehicle))
+        if (this.vehicles.contains(vehicle))
             return true;
         return false;
     }
 
     public boolean isVehicleUnParked(Object vehicle) {
-        if (this.vehicle != null)
+        if (vehicle == null)
             return false;
-        if (this.vehicle.equals(vehicle)){
-            vehicle = null;
+        if (this.vehicles.contains(vehicle)){
+            this.vehicles.remove(vehicle);
             return true;
         }
         return false;
     }
+
 
 
 }
