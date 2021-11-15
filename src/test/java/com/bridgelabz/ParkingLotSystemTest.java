@@ -18,7 +18,7 @@ public class ParkingLotSystemTest {
 
     @Test
     public void givenCarToParkingLot_WhenDriverAbleToParkTheCar() {
-        Assertions.assertDoesNotThrow(()->{
+        Assertions.assertDoesNotThrow(() -> {
             parkingLotSystem.vehicleParking(vehicle);
         });
         boolean isParked = parkingLotSystem.isVehicleParked(vehicle);
@@ -29,7 +29,7 @@ public class ParkingLotSystemTest {
 
     @Test
     public void givenCarToParkingLot_WhenDriverAbleToParkTheCar_ShouldBeTrue() {
-        Assertions.assertDoesNotThrow(()->{
+        Assertions.assertDoesNotThrow(() -> {
             parkingLotSystem.vehicleParking(vehicle);
         });
         boolean isParked = parkingLotSystem.isVehicleParked(vehicle);
@@ -41,7 +41,7 @@ public class ParkingLotSystemTest {
 
     @Test
     public void givenCarToParkingLot_WhenDriverWantsToUnParkTheCar_ShouldReturnTrue() {
-        Assertions.assertThrows(ParkingLotException.class, ()->{
+        Assertions.assertThrows(ParkingLotException.class, () -> {
             parkingLotSystem.vehicleParking(vehicle);
             parkingLotSystem.vehicleUnParking(vehicle);
             boolean vehicleUnParked = parkingLotSystem.isVehicleUnParked(vehicle);
@@ -52,11 +52,11 @@ public class ParkingLotSystemTest {
 
     @Test
     public void givenAVehicle_WhenUnParked_ShouldReturnFalse() {
-        Assertions.assertThrows(ParkingLotException.class, ()->{
+        Assertions.assertThrows(ParkingLotException.class, () -> {
             parkingLotSystem.vehicleParking(vehicle);
             parkingLotSystem.vehicleUnParking(vehicle);
             parkingLotSystem.isVehicleUnParked(vehicle);
-        },"Parking Lot is Full.");
+        }, "Parking Lot is Full.");
 
     }
 
@@ -64,20 +64,21 @@ public class ParkingLotSystemTest {
     public void givenVehiclesToParkingLot_WhenTheLotIsFull_ShouldReturnFullSign() {
         ParkingLotOwner owner = new ParkingLotOwner();
         parkingLotSystem.registeredObserver(owner);
-        Assertions.assertThrows(ParkingLotException.class, ()->{
+        Assertions.assertThrows(ParkingLotException.class, () -> {
             parkingLotSystem.vehicleParking(vehicle);
             parkingLotSystem.vehicleParking(new Object());
             parkingLotSystem.vehicleParking(new Object());
-        },"Parking lot is full.");
+        }, "Parking lot is full.");
         boolean capacityFull = owner.isCapacityFull();
         Assertions.assertTrue(capacityFull);
 
 
     }
+
     @Test
     public void givenCapacityIs2_ShouldBeAbleToPrk2Vehicles() {
         parkingLotSystem.setCapacity(2);
-        Assertions.assertThrows(ParkingLotException.class, ()->{
+        Assertions.assertThrows(ParkingLotException.class, () -> {
             parkingLotSystem.vehicleParking(vehicle);
             parkingLotSystem.vehicleParking(vehicle);
             boolean isParked1 = parkingLotSystem.isVehicleParked(vehicle);
@@ -89,27 +90,28 @@ public class ParkingLotSystemTest {
     }
 
     @Test
-    public void givenParkingLotIsFull_ShouldReturnToAirportSecurity()  {
+    public void givenParkingLotIsFull_ShouldReturnToAirportSecurity() {
 //        ParkingLotOwner owner = new ParkingLotOwner();
 //        parkingLotSystem.registeredObserver(owner);
         AirportSecurity airportSecurity = new AirportSecurity();
         parkingLotSystem.registeredObserver(airportSecurity);
-        Assertions.assertThrows(ParkingLotException.class,()-> {
+        Assertions.assertThrows(ParkingLotException.class, () -> {
             parkingLotSystem.vehicleParking(vehicle);
             parkingLotSystem.vehicleParking(new Object());
-        },"Parking Lot is Full.");
+        }, "Parking Lot is Full.");
         boolean capacityFull = airportSecurity.isCapacityFull();
         Assertions.assertTrue(capacityFull);
     }
+
     @Test
     public void givenWhenParkingLotSpaceIsAvailableAfterFull_ShouldReturnTrue() {
         Object vehicle2 = new Object();
         ParkingLotOwner owner = new ParkingLotOwner();
         parkingLotSystem.registeredObserver(owner);
-        Assertions.assertThrows(ParkingLotException.class, ()->{
+        Assertions.assertThrows(ParkingLotException.class, () -> {
             parkingLotSystem.vehicleParking(vehicle);
             parkingLotSystem.vehicleParking(vehicle2);
-        },"Parking lot is full.");
+        }, "Parking lot is full.");
         parkingLotSystem.isVehicleUnParked(vehicle);
         boolean capacityFull = owner.isCapacityFull();
         Assertions.assertFalse(capacityFull);

@@ -1,8 +1,14 @@
 package com.bridgelabz;
 
-public class AirportSecurity implements ParkingLotObserver{
+/**********************************
+ * @purpose: Airport Security observers the parking lot capacity to redirect staff.
+ *
+ * @author : VamsiKrishna A
+ * ********************************/
+public class AirportSecurity implements ParkingLotObserver {
     private boolean isFullCapacity;
 
+    @Override
     public void capacityIsFull() {
         isFullCapacity = true;
     }

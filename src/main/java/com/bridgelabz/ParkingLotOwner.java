@@ -1,6 +1,12 @@
 package com.bridgelabz;
 
-public class ParkingLotOwner implements ParkingLotObserver{
+/**********************************
+ * @purpose: Parking Lot Owner observers the parking lot capacity to put out the full sign.
+ *
+ * @author : VamsiKrishna A
+ * ********************************/
+
+public class ParkingLotOwner implements ParkingLotObserver {
 
 
     private boolean isFullCapacity;
