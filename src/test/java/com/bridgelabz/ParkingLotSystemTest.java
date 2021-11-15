@@ -96,4 +96,18 @@ public class ParkingLotSystemTest {
             Assertions.assertTrue(isParked1 && isParked2);
         } catch (ParkingLotException e) { }
     }
+
+    @Test
+    public void givenParkingLotIsFull_ShouldReturnToAirportSecurity() throws ParkingLotException {
+        ParkingLotOwner owner = new ParkingLotOwner();
+        parkingLotSystem.registeredOwner(owner);
+        AirportSecurity airportSecurity = new AirportSecurity();
+        parkingLotSystem.registeredSecurity(airportSecurity);
+        Assertions.assertDoesNotThrow(()-> {
+            parkingLotSystem.vehicleParking(vehicle);
+            parkingLotSystem.vehicleParking(new Object());
+        });
+        boolean capacityFull = airportSecurity.isCapacityFull();
+        Assertions.assertTrue(capacityFull);
+    }
 }
