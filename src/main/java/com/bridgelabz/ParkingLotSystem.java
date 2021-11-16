@@ -124,6 +124,11 @@ public class ParkingLotSystem {
         return false;
     }
 
+    /*
+    * @purpose: As driver wants to find the Parked car.
+    *
+    * @params: vehicle as object, finding a vehicle from list by using indexOf vehicles list
+    * */
     public int findingVehicle(Object vehicle) throws ParkingLotException {
         if (this.vehicles.contains(vehicle)) {
             int slotNumber = vehicles.indexOf(vehicle);
