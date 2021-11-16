@@ -18,7 +18,7 @@ public class ParkingLotSystemTest {
 
     @Test
     public void givenCarToParkingLot_WhenDriverAbleToParkTheCar() {
-        Assertions.assertDoesNotThrow(() -> {
+        Assertions.assertThrows(ParkingLotException.class,() -> {
             parkingLotSystem.vehicleParking(vehicle);
         });
         boolean isParked = parkingLotSystem.isVehicleParked(vehicle);
@@ -29,7 +29,7 @@ public class ParkingLotSystemTest {
 
     @Test
     public void givenCarToParkingLot_WhenDriverAbleToParkTheCar_ShouldBeTrue() {
-        Assertions.assertDoesNotThrow(() -> {
+        Assertions.assertThrows(ParkingLotException.class,() -> {
             parkingLotSystem.vehicleParking(vehicle);
         });
         boolean isParked = parkingLotSystem.isVehicleParked(vehicle);
@@ -115,5 +115,14 @@ public class ParkingLotSystemTest {
         parkingLotSystem.isVehicleUnParked(vehicle);
         boolean capacityFull = owner.isCapacityFull();
         Assertions.assertFalse(capacityFull);
+    }
+    @Test
+    public void givenParkedVehicle_WenDriverWantsToFindThCar_ShouldReturnFalse() {
+        Assertions.assertThrows(ParkingLotException.class, ()->{
+            parkingLotSystem.vehicleParking(vehicle);
+        },"Parking lot is full.");
+        parkingLotSystem.isVehicleParked(vehicle);
+        int slotNumber = parkingLotSystem.findingVehicle(vehicle);
+        Assertions.assertNotEquals(1,slotNumber);
     }
 }

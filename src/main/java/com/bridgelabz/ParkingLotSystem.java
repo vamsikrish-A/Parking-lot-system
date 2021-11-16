@@ -3,7 +3,7 @@ package com.bridgelabz;
  * @purpose: Parking Lot System
  *
  * @author: VamsiKrishna A
- * @version: 1.0
+* @version: 1.0
  * @since:10-November-2021
  * *******************************************************************/
 
@@ -26,6 +26,7 @@ public class ParkingLotSystem {
      * as parking lot owner, Airport Security..
      * */
     private List<ParkingLotObserver> observers;
+    private int slot;
 
 
     /*
@@ -39,7 +40,7 @@ public class ParkingLotSystem {
 
     /*
      * @purpose: setCapacity method for setting the actual capacity of Parking Lot system
-     * @params: capacity is given in test cases.
+     * @params: capacity is used to set the actual Capacity of parking lot.
      * */
     public void setCapacity(int capacity) {
         this.actualCapacity = capacity;
@@ -58,45 +59,46 @@ public class ParkingLotSystem {
     * @purpose: method to park the vehicle in parking lot system
                 by checking the space availability and checks for whether the same vehicle as parked
                  & throws exception when the lot or capacity is full.
-    * @params: vehicle as object .
+    * @params: vehicle as object is used to check whether the same vehicle object present
+    *           or adds to vehicles list to Park Vehicle.
     * */
     public void vehicleParking(Object vehicle) throws ParkingLotException {
+        if (isVehicleParked(vehicle)) {
+
+            throw new ParkingLotException(ParkingLotException.ExceptionType.VEHICLE_ALREADY_PARKED,"Vehicle is already parked");
+        }
+        this.vehicles.add(vehicle);
         if (this.vehicles.size() == this.actualCapacity) {
             for (ParkingLotObserver observer : observers) {
                 observer.capacityIsFull();
-
             }
-
-            throw new ParkingLotException("Parking Lot is Full.");
+            throw new ParkingLotException(ParkingLotException.ExceptionType.PARKING_LOT_IS_FULL,"Parking Lot is Full.");
         }
-        if (isVehicleParked(vehicle))
-            throw new ParkingLotException("Vehicle is already parked");
-        this.vehicles.add(vehicle);
-
     }
 
     /*
     * @purpose: method t unPark a vehicle from the parking lot system , fist checks whether the lot is null
                 & goes into the list contains , removes the vehicle from the list
-    * @params: vehicle as object
+    * @params: vehicle as object , checks for vehicle object present in vehicles List
     * */
     public void vehicleUnParking(Object vehicle) throws ParkingLotException {
         if (this.vehicles != null)
-            throw new ParkingLotException("Parking Lot is Full.");
+            throw new ParkingLotException(ParkingLotException.ExceptionType.PARKING_LOT_IS_FULL,"Parking Lot is Full.");
         if (this.vehicles.contains(vehicle)) {
             this.vehicles.remove(vehicle);
-            throw new ParkingLotException("Parking Lot is Empty");
+            throw new ParkingLotException(ParkingLotException.ExceptionType.NO_SUCH_VEHICLE,"Parking Lot is Empty");
         }
     }
 
     /*
      * @purpose: method used to add the vehicle object to list vehicles
      *           to park vehicles, returns True, if not returns False.
-     * @params: vehicle as object.
+     * @params: vehicle as object checks whether contains in vehicles List.
      * */
     public boolean isVehicleParked(Object vehicle) {
-        if (this.vehicles.contains(vehicle))
+        if (this.vehicles.contains(vehicle)){
             return true;
+        }
         return false;
     }
 
@@ -105,7 +107,9 @@ public class ParkingLotSystem {
      *           checks whether the list is null, returns false,
      *           checks vehicles list contains vehicle object & removes it for list,
      *           observer shows the capacity of parking lot to observers.
-     * @params: vehicle as object. */
+     * @params: vehicle as object checks whether contains in vehicles List,
+     *           if contains removes from the vehicle List.
+     * */
     public boolean isVehicleUnParked(Object vehicle) {
         if (this.vehicles == null)
             return false;
@@ -120,5 +124,7 @@ public class ParkingLotSystem {
         return false;
     }
 
-
+    public int findingVehicle(Object vehicle) {
+        return 0;
+    }
 }
