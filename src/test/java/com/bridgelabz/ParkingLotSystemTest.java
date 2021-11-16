@@ -117,12 +117,21 @@ public class ParkingLotSystemTest {
         Assertions.assertFalse(capacityFull);
     }
     @Test
-    public void givenParkedVehicle_WenDriverWantsToFindThCar_ShouldReturnFalse() {
+    public void givenParkedVehicle_WhenDriverWantsToFindThCar_ShouldReturnNotEqual() {
         Assertions.assertThrows(ParkingLotException.class, ()->{
             parkingLotSystem.vehicleParking(vehicle);
-        },"Parking lot is full.");
-        parkingLotSystem.isVehicleParked(vehicle);
-        int slotNumber = parkingLotSystem.findingVehicle(vehicle);
-        Assertions.assertNotEquals(1,slotNumber);
+            parkingLotSystem.isVehicleParked(vehicle);
+            int slotNumber = parkingLotSystem.findingVehicle(vehicle);
+            Assertions.assertNotEquals(1, slotNumber);
+        },"No Such vehicle in parking lot");
+    }
+    @Test
+    public void givenParkedVehicle_WhenDriverWantsToFindThCar_ShouldReturnEqual() {
+        Assertions.assertThrows(ParkingLotException.class, ()->{
+            parkingLotSystem.vehicleParking(vehicle);
+            parkingLotSystem.isVehicleParked(vehicle);
+            int slotNumber = parkingLotSystem.findingVehicle(vehicle);
+            Assertions.assertEquals(0, slotNumber);
+        },"No Such vehicle in parking lot");
     }
 }

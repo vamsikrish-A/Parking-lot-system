@@ -124,7 +124,12 @@ public class ParkingLotSystem {
         return false;
     }
 
-    public int findingVehicle(Object vehicle) {
-        return 0;
+    public int findingVehicle(Object vehicle) throws ParkingLotException {
+        if (this.vehicles.contains(vehicle)) {
+            int slotNumber = vehicles.indexOf(vehicle);
+            return slotNumber;
+        }
+        throw new ParkingLotException(ParkingLotException.ExceptionType.NO_SUCH_VEHICLE,
+                "No Such vehicle in parking lot");
     }
 }
