@@ -8,7 +8,7 @@ import java.util.List;
 public class ParkingSpot {
 
     private List<Vehicle> vehicles;
-    ParkingLotSystem parkingLotSystem = new ParkingLotSystem(2);
+    ParkingLotSystem parkingLotSystem = new ParkingLotSystem(1);
     private Object vehicle;
 
     public Object parkingSpotForVehicleParking() throws ParkingLotException {

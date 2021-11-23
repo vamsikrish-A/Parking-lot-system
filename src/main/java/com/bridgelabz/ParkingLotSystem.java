@@ -35,7 +35,7 @@ public class ParkingLotSystem {
      * */
     public ParkingLotSystem(int capacity) {
         this.observers = new ArrayList<>();
-        this.vehicles = new ArrayList();
+        this.vehicles = new ArrayList(1);
         this.actualCapacity = capacity;
     }
 
@@ -64,19 +64,17 @@ public class ParkingLotSystem {
     *           or adds to vehicles list to Park Vehicle.
     * */
     public void vehicleParking(Object vehicle) throws ParkingLotException {
+        this.vehicles.add((Vehicle) vehicle);
         if (isVehicleParked(vehicle)) {
 
             throw new ParkingLotException(ParkingLotException.ExceptionType.VEHICLE_ALREADY_PARKED,"Vehicle is already parked");
         }
-        this.vehicles.add((Vehicle) vehicle);
-
         if (this.vehicles.size() == this.actualCapacity) {
             for (ParkingLotObserver observer : observers) {
                 observer.capacityIsFull();
             }
             throw new ParkingLotException(ParkingLotException.ExceptionType.PARKING_LOT_IS_FULL,"Parking Lot is Full.");
         }
-
     }
 
     /*
