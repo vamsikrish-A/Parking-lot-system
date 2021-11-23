@@ -1,14 +1,16 @@
 package com.bridgelabz;
 
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import java.time.LocalTime;
 
 public class ParkingLotSystemTest {
 
     ParkingLotSystem parkingLotSystem = null;
     Object vehicle = null;
+    LocalTime time = LocalTime.now();
 
     @BeforeEach
     public void setUp() {
@@ -134,4 +136,18 @@ public class ParkingLotSystemTest {
             Assertions.assertEquals(0, slotNumber);
         },"No Such vehicle in parking lot");
     }
+    @Test
+    public void givenVehicleWhenParkingWantToKnowTimeShouldBeNotEqual() {
+        Vehicle vehicle = new Vehicle("Car", LocalTime.now());
+        ParkingSpot parkingSpot = new ParkingSpot();
+        Assertions.assertThrows(ParkingLotException.class, ()->{
+            parkingLotSystem.vehicleParking(vehicle);
+            Assertions.assertEquals(1,parkingSpot.parkingSpotForVehicleParking());
+        });
+        LocalTime time = vehicle.getParkingTime();
+        Assertions.assertNotEquals(time,LocalTime.now());
+
+
+    }
+
 }

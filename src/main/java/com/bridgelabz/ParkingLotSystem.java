@@ -7,6 +7,7 @@ package com.bridgelabz;
  * @since:10-November-2021
  * *******************************************************************/
 
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,13 +21,13 @@ public class ParkingLotSystem {
      * private list for vehicles is declared to get all vehicles that has parked and unParked
      * in the system
      * */
-    private List vehicles;
+    private List<Vehicle> vehicles;
     /*
      * Private list for observers has declared to inform all the observers when the parking lot is full
      * as parking lot owner, Airport Security..
      * */
     private List<ParkingLotObserver> observers;
-    private int slot;
+    private List<ParkingSpot> parkingSpotList;
 
 
     /*
@@ -67,13 +68,15 @@ public class ParkingLotSystem {
 
             throw new ParkingLotException(ParkingLotException.ExceptionType.VEHICLE_ALREADY_PARKED,"Vehicle is already parked");
         }
-        this.vehicles.add(vehicle);
+        this.vehicles.add((Vehicle) vehicle);
+
         if (this.vehicles.size() == this.actualCapacity) {
             for (ParkingLotObserver observer : observers) {
                 observer.capacityIsFull();
             }
             throw new ParkingLotException(ParkingLotException.ExceptionType.PARKING_LOT_IS_FULL,"Parking Lot is Full.");
         }
+
     }
 
     /*
