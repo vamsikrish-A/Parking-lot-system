@@ -5,7 +5,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalTime;
-import java.util.ArrayList;
 
 public class ParkingLotSystemTest {
 
@@ -26,7 +25,7 @@ public class ParkingLotSystemTest {
         Assertions.assertThrows(ParkingLotException.class,() -> {
             parkingLotSystem.vehicleParking(vehicles);
         });
-        boolean isParked = parkingLotSystem.isVehicleParked(vehicle);
+        boolean isParked = parkingLotSystem.isVehicleParked((Vehicle) vehicle);
         Assertions.assertFalse(isParked);
     }
 
@@ -77,7 +76,7 @@ public class ParkingLotSystemTest {
             parkingLotSystem.vehicleParking(vehicle2);
         }, "Parking lot is full.");
         boolean capacityFull = owner.isCapacityFull();
-        Assertions.assertFalse(capacityFull);
+        Assertions.assertTrue(capacityFull);
 
 
     }
@@ -104,12 +103,12 @@ public class ParkingLotSystemTest {
         vehicles = new Vehicle("suv", LocalTime.now());
         AirportSecurity airportSecurity = new AirportSecurity();
         parkingLotSystem.registeredObserver(airportSecurity);
-        Assertions.assertThrows(ParkingLotException.class, () -> {
+        Assertions.assertDoesNotThrow(() -> {
             parkingLotSystem.vehicleParking(vehicles);
-            parkingLotSystem.vehicleParking(new Object());
+            parkingLotSystem.vehicleParking(new Vehicle("xuv",LocalTime.now()));
         }, "Parking Lot is Full.");
         boolean capacityFull = airportSecurity.isCapacityFull();
-        Assertions.assertFalse(capacityFull);
+        Assertions.assertTrue(capacityFull);
     }
 
     @Test
@@ -148,14 +147,37 @@ public class ParkingLotSystemTest {
     }
     @Test
     public void givenVehicleWhenParkingWantToKnowTimeShouldBeNotEqual() {
-        Vehicle vehicle = new Vehicle("Car", LocalTime.now());
-        ParkingSpot parkingSpot = new ParkingSpot();
-        Assertions.assertThrows(ParkingLotException.class, ()->{
-            parkingLotSystem.vehicleParking(vehicle);
-            Assertions.assertEquals(1,parkingSpot.parkingSpotForVehicleParking());
+        vehicles = new Vehicle("Car", LocalTime.now());
+        Assertions.assertDoesNotThrow(()->{
+            parkingLotSystem.vehicleParking(vehicles);
         });
-        LocalTime time = vehicle.getParkingTime();
+        LocalTime time = vehicles.getParkingTime();
         Assertions.assertNotEquals(time,LocalTime.now());
     }
-
+    @Test
+    public void givenParkingVehicle_OwnerWantsAttendant_ToHaveEvenlyDistribution_ShouldReturnfalse() {
+        Vehicle vehicle2 = new Vehicle("suv", LocalTime.now());
+        Vehicle vehicle1 = new Vehicle("xuv", LocalTime.now());
+        parkingLotSystem.setCapacity(1);
+        Assertions.assertThrows(ParkingLotException.class, ()->{
+            parkingLotSystem.vehicleParking(vehicle1);
+            parkingLotSystem.vehicleParking(vehicle1);
+        },"Parking lot is full.");
+        Assertions.assertFalse(parkingLotSystem.isVehicleParked(vehicle2) &&
+                parkingLotSystem.isVehicleParked(vehicle1));
+    }
+    @Test
+    public void givenParkingVehicle_OwnerWantsAttendant_ToHaveEvenlyDistribution_ShouldReturnTrue() {
+        Vehicle vehicle1 = new Vehicle("suv", LocalTime.now());
+        Vehicle vehicle2 = new Vehicle("xuv", LocalTime.now());
+        parkingLotSystem.setCapacity(2);
+        Assertions.assertDoesNotThrow(()->{
+            parkingLotSystem.vehicleParking(vehicle1);
+        },"Parking lot is full.");
+        Assertions.assertDoesNotThrow(()->{
+            parkingLotSystem.vehicleParking(vehicle2);
+        },"Parking lot is full.");
+        Assertions.assertTrue(parkingLotSystem.isVehicleParked(vehicle1) &&
+                parkingLotSystem.isVehicleParked(vehicle2));
+    }
 }

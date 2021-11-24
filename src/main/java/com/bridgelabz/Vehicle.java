@@ -2,7 +2,7 @@ package com.bridgelabz;
 
 import java.time.LocalTime;
 
-public class Vehicle {
+public class Vehicle{
     private final String vehicleType;
     private LocalTime parkingTime;
 
