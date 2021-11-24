@@ -182,6 +182,7 @@ public class ParkingLotSystemTest {
     }
     @Test
     public void givenHandicappedDriver_WantsToParkTheCar_AtTheNearestSpace_ShouldBeFalse() {
+        Vehicle.DriverType handicapped = Vehicle.DriverType.HANDICAPPED;
         Vehicle.DriverType.HANDICAPPED(vehicles);
         vehicles = new Vehicle("suv",LocalTime.now());
         Assertions.assertThrows(ParkingLotException.class,()-> {
@@ -207,5 +208,15 @@ public class ParkingLotSystemTest {
             parkingLotSystem.vehicleParking(vehicles);
         });
         Assertions.assertTrue(parkingLotSystem.isVehicleParked(vehicles));
+    }
+    @Test
+    public void givenParkedCar_PoliceWantsToKnow_LocationOfWhiteCars_ShouldBeTrue() {
+        vehicles = new Vehicle("suv", LocalTime.now());
+        vehicles.setVehicleColor("White");
+        Assertions.assertThrows(ParkingLotException.class, ()->{
+            parkingLotSystem.vehicleParking(vehicles);
+            int carLocation = parkingLotSystem.getVehicleLocationByColor(vehicles);
+            Assertions.assertEquals(0,carLocation);
+        },"no such vehicle");
     }
 }

@@ -206,7 +206,21 @@ public class ParkingLotSystem<slot> {
         throw new ParkingLotException(ParkingLotException.ExceptionType.NO_SUCH_VEHICLE,
                 "No Such vehicle in parking lot");
     }
-
+    public int getVehicleLocationByColor(Vehicle vehicleColor) throws ParkingLotException {
+        for (Vehicle whiteCar: parkingLot1) {
+            if (whiteCar.getVehicleColor().equals(vehicleColor))
+                return parkingLot1.indexOf(whiteCar);
+        }
+        for (Vehicle whiteCar : parkingLot2) {
+            if (whiteCar.getVehicleColor().equals(vehicleColor))
+                return parkingLot1.indexOf(whiteCar);
+        }
+        for (Vehicle whiteCar : handicappedParking) {
+            if (whiteCar.getVehicleColor().equals(vehicleColor))
+                return handicappedParking.indexOf(whiteCar);
+        }
+        throw new ParkingLotException(ParkingLotException.ExceptionType.NO_SUCH_VEHICLE,"no such vehicle");
+    }
 
 
 }

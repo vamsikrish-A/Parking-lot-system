@@ -5,6 +5,7 @@ import java.time.LocalTime;
 public class Vehicle{
     private final String vehicleType;
     private LocalTime parkingTime;
+    private  String vehicleColor;
 
     public enum DriverType {NORMAL , HANDICAPPED;
 
@@ -24,4 +25,10 @@ public class Vehicle{
     public LocalTime getParkingTime() {
         return parkingTime;
     }
+
+    public void setVehicleColor(String vehicleColor) {
+        this.vehicleColor = vehicleColor;
+    }
+
+    public String getVehicleColor() { return vehicleColor; }
 }
