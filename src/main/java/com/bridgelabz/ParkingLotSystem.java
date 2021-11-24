@@ -86,6 +86,10 @@ public class ParkingLotSystem<slot> {
                 throw new ParkingLotException(ParkingLotException.ExceptionType.PARKING_LOT_IS_FULL,
                         "Parking lot is full.");
             handicappedParking.add(vehicle);
+        }else if (vehicle.getVehicleType().equals("xuv")){                          //manoeuvre large cars
+            if (parkingLot1.size() > parkingLot2.size()) {
+                parkingLot2.add(vehicle);
+            } else  parkingLot1.add(vehicle);
         }else {
             if (parkingLot1.size() > parkingLot2.size()) {
                 parkingLot2.add(vehicle);
@@ -202,5 +206,7 @@ public class ParkingLotSystem<slot> {
         throw new ParkingLotException(ParkingLotException.ExceptionType.NO_SUCH_VEHICLE,
                 "No Such vehicle in parking lot");
     }
+
+
 
 }

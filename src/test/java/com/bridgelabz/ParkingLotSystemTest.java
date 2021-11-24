@@ -200,4 +200,12 @@ public class ParkingLotSystemTest {
             Assertions.assertEquals(0,vehicleSpot);
         },"parking lot is full.");
     }
+    @Test
+    public void givenAttendant_ToHighestFreeSpaceLot_ToManoeuvreLargeCars_ShouldBeTrue() {
+        vehicles = new Vehicle("Xuv",LocalTime.now());
+        Assertions.assertDoesNotThrow(()->{
+            parkingLotSystem.vehicleParking(vehicles);
+        });
+        Assertions.assertTrue(parkingLotSystem.isVehicleParked(vehicles));
+    }
 }
