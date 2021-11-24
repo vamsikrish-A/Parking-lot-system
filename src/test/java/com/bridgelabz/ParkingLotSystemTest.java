@@ -241,4 +241,14 @@ public class ParkingLotSystemTest {
             Assertions.assertEquals(0,location);
         },"no such vehicle");
     }
+    @Test
+    public void givenVehicle_PoliceWantsToKnowAbout_VehicleParked30MinutesAgo_ShouldBeTrue() {
+        Vehicle vehicle = new Vehicle("xuv",LocalTime.of(05,30));
+        Assertions.assertThrows(ParkingLotException.class,()->{
+            parkingLotSystem.vehicleParking(vehicle);
+            int location = parkingLotSystem.getListOfLast30MinutesParkedVehicle(LocalTime.now());
+            Assertions.assertEquals(0,location);
+        },"No such vehicle");
+
+    }
 }

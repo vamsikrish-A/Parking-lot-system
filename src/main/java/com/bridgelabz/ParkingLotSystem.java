@@ -7,6 +7,7 @@ package com.bridgelabz;
  * @since:10-November-2021
  * *******************************************************************/
 
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -259,6 +260,23 @@ public class ParkingLotSystem<slot> {
         }
         throw new ParkingLotException(ParkingLotException.ExceptionType.NO_SUCH_VEHICLE,
                 "No Such vehicle in parking lot");
+    }
+    public int getListOfLast30MinutesParkedVehicle(LocalTime time) throws ParkingLotException {
+        if (isVehicleParked(vehicle)) {
+            for (Vehicle car : parkingLot1) {
+                if (car.getParkingTime().minusMinutes(30).equals(time))
+                    return parkingLot1.indexOf(car);
+            }
+            for (Vehicle car : parkingLot2) {
+                if (car.getParkingTime().minusMinutes(30).equals(time))
+                    return parkingLot2.indexOf(car);
+            }
+            for (Vehicle car : handicappedParking) {
+                if (car.getParkingTime().minusMinutes(30).equals(time))
+                    return handicappedParking.indexOf(car);
+            }
+        }
+        throw new ParkingLotException(ParkingLotException.ExceptionType.NO_SUCH_VEHICLE,"no such vehicle");
     }
 
 
