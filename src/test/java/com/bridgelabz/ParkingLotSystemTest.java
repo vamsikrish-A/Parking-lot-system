@@ -180,4 +180,24 @@ public class ParkingLotSystemTest {
         Assertions.assertTrue(parkingLotSystem.isVehicleParked(vehicle1) &&
                 parkingLotSystem.isVehicleParked(vehicle2));
     }
+    @Test
+    public void givenHandicappedDriver_WantsToParkTheCar_AtTheNearestSpace_ShouldBeFalse() {
+        Vehicle.DriverType.HANDICAPPED(vehicles);
+        vehicles = new Vehicle("suv",LocalTime.now());
+        Assertions.assertThrows(ParkingLotException.class,()-> {
+            parkingLotSystem.vehicleParking(vehicles);
+            int vehicleSpot = parkingLotSystem.findingVehicle(vehicles);
+            Assertions.assertNotEquals(0,vehicleSpot);
+        },"parking lot is full.");
+    }
+    @Test
+    public void givenHandicappedDriver_WantsToParkTheCar_AtTheNearestSpace_ShouldBeEqual() {
+        Vehicle.DriverType.HANDICAPPED(vehicles);
+        vehicles = new Vehicle("suv", LocalTime.now());
+        Assertions.assertDoesNotThrow(()-> {
+            parkingLotSystem.vehicleParking(vehicles);
+            int vehicleSpot = parkingLotSystem.findingVehicle(vehicles);
+            Assertions.assertEquals(0,vehicleSpot);
+        },"parking lot is full.");
+    }
 }

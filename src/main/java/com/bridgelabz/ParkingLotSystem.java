@@ -31,6 +31,7 @@ public class ParkingLotSystem<slot> {
     private List<Vehicle> parkingLot1;
     private List<Vehicle> parkingLot2;
     private Vehicle vehicle;
+    private List<Vehicle> handicappedParking;
 
 
 
@@ -43,6 +44,7 @@ public class ParkingLotSystem<slot> {
         this.actualCapacity = capacity;
         parkingLot1 = new ArrayList<>(actualCapacity);
         parkingLot2 = new ArrayList<>(actualCapacity);
+        handicappedParking = new ArrayList<>(actualCapacity);
 
     }
 
@@ -71,17 +73,24 @@ public class ParkingLotSystem<slot> {
     *           or adds to vehicles list to Park Vehicle.
     * */
     public void vehicleParking(Vehicle vehicle) throws ParkingLotException {
-        if (parkingLot1.size() == actualCapacity && parkingLot2.size() == actualCapacity) {
+        if (parkingLot1.size() == actualCapacity && parkingLot2.size() == actualCapacity
+                && handicappedParking.size() == actualCapacity) {
             throw new ParkingLotException(ParkingLotException.ExceptionType.PARKING_LOT_IS_FULL,"Parking lot is full.");
         }
         if (isVehicleParked(vehicle)) {
             throw new ParkingLotException(ParkingLotException.ExceptionType.VEHICLE_ALREADY_PARKED,
                     "Vehicle is already parked");
         }
-        if (parkingLot1.size() > parkingLot2.size()) {
-            parkingLot2.add(vehicle);
-        } else  parkingLot1.add(vehicle);
-
+        if (Vehicle.DriverType.HANDICAPPED(vehicle)){
+            if (handicappedParking.size() > actualCapacity)
+                throw new ParkingLotException(ParkingLotException.ExceptionType.PARKING_LOT_IS_FULL,
+                        "Parking lot is full.");
+            handicappedParking.add(vehicle);
+        }else {
+            if (parkingLot1.size() > parkingLot2.size()) {
+                parkingLot2.add(vehicle);
+            } else  parkingLot1.add(vehicle);
+        }
         if (parkingLot1.size() == actualCapacity && parkingLot2.size() == actualCapacity) {
             for (ParkingLotObserver observer : observers) {
                 observer.capacityIsFull();
@@ -125,6 +134,12 @@ public class ParkingLotSystem<slot> {
         for (Vehicle park : parkingLot2) {
             if (park.equals(vehicle)) {
                 return  true;
+            }
+            break;
+        }
+        for (Vehicle park : handicappedParking) {
+            if (park.equals(vehicle)) {
+                return true;
             }
             break;
         }
@@ -178,6 +193,10 @@ public class ParkingLotSystem<slot> {
             for (Vehicle slotNumber : parkingLot2) {
                 if (slotNumber.equals(vehicle))
                     return parkingLot2.indexOf(slotNumber);
+            }
+            for (Vehicle slotNumber : handicappedParking) {
+                if (slotNumber.equals(vehicle))
+                    return handicappedParking.indexOf(slotNumber);
             }
         }
         throw new ParkingLotException(ParkingLotException.ExceptionType.NO_SUCH_VEHICLE,
