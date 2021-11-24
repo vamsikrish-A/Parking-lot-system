@@ -240,6 +240,26 @@ public class ParkingLotSystem<slot> {
         }
         throw new ParkingLotException(ParkingLotException.ExceptionType.NO_SUCH_VEHICLE,"no such vehicle");
     }
+    public int valetParkingForHigSecurity(Vehicle vehicleBrand) throws ParkingLotException {
+        if (isVehicleParked(vehicle)) {
+            if (vehicle.getVehicleBrand().equals(vehicleBrand)) {
+                for (Vehicle slotNumber : parkingLot1) {
+                    if (slotNumber.equals(vehicle))
+                        return parkingLot1.indexOf(slotNumber);
+                }
+                for (Vehicle slotNumber : parkingLot2) {
+                    if (slotNumber.equals(vehicle))
+                        return parkingLot2.indexOf(slotNumber);
+                }
+                for (Vehicle slotNumber : handicappedParking) {
+                    if (slotNumber.equals(vehicle))
+                        return handicappedParking.indexOf(slotNumber);
+                }
+            }
+        }
+        throw new ParkingLotException(ParkingLotException.ExceptionType.NO_SUCH_VEHICLE,
+                "No Such vehicle in parking lot");
+    }
 
 
 }

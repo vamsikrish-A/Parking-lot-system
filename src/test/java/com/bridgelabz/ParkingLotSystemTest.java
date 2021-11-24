@@ -231,4 +231,14 @@ public class ParkingLotSystemTest {
             Assertions.assertEquals(vehicleNumber,vehicle.getVehicleNumber());
         },"no such vehicle");
     }
+    @Test
+    public void givenParkedBMWCars_PoliceWantsToKnowLocation_IncreaseSecurity_ShouldBeEqual() {
+        Vehicle vehicle = new Vehicle("xuv",LocalTime.now());
+        vehicle.setVehicleBrand("BMW");
+        Assertions.assertThrows(ParkingLotException.class,()->{
+            parkingLotSystem.vehicleParking(vehicle);
+            int location = parkingLotSystem.valetParkingForHigSecurity(vehicle);
+            Assertions.assertEquals(0,location);
+        },"no such vehicle");
+    }
 }
