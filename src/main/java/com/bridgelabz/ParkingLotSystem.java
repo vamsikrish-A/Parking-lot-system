@@ -3,7 +3,7 @@ package com.bridgelabz;
  * @purpose: Parking Lot System
  *
  * @author: VamsiKrishna A
-* @version: 1.0
+ * @version: 1.0
  * @since:10-November-2021
  * *******************************************************************/
 
@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class ParkingLotSystem<slot> {
+public class ParkingLotSystem {
 
     /*
      * private variable is declared to get capacity of parking lot system to park the vehicles
@@ -31,11 +31,16 @@ public class ParkingLotSystem<slot> {
      * as parking lot owner, Airport Security..
      * */
     private List<ParkingLotObserver> observers;
+    /*
+     * Private List for parking lot1 and parking lot2 to store the vehicles in lot
+     * */
     private List<Vehicle> parkingLot1;
     private List<Vehicle> parkingLot2;
     private Vehicle vehicle;
+    /*
+     * private List for handicapped drive to store the vehicle in the nearest spot
+     * */
     private List<Vehicle> handicappedParking;
-
 
 
     /*
@@ -43,7 +48,7 @@ public class ParkingLotSystem<slot> {
      * */
     public ParkingLotSystem(int capacity) {
         this.observers = new ArrayList<>();
-       // this.vehicles = new ArrayList();
+        // this.vehicles = new ArrayList();
         this.actualCapacity = capacity;
         parkingLot1 = new ArrayList<>(actualCapacity);
         parkingLot2 = new ArrayList<>(actualCapacity);
@@ -78,32 +83,32 @@ public class ParkingLotSystem<slot> {
     public void vehicleParking(Vehicle vehicle) throws ParkingLotException {
         if (parkingLot1.size() == actualCapacity && parkingLot2.size() == actualCapacity
                 && handicappedParking.size() == actualCapacity) {
-            throw new ParkingLotException(ParkingLotException.ExceptionType.PARKING_LOT_IS_FULL,"Parking lot is full.");
+            throw new ParkingLotException(ParkingLotException.ExceptionType.PARKING_LOT_IS_FULL, "Parking lot is full.");
         }
         if (isVehicleParked(vehicle)) {
             throw new ParkingLotException(ParkingLotException.ExceptionType.VEHICLE_ALREADY_PARKED,
                     "Vehicle is already parked");
         }
-        if (Vehicle.DriverType.HANDICAPPED(vehicle)){
+        if (Vehicle.DriverType.HANDICAPPED(vehicle)) {
             if (handicappedParking.size() > actualCapacity)
                 throw new ParkingLotException(ParkingLotException.ExceptionType.PARKING_LOT_IS_FULL,
                         "Parking lot is full.");
             handicappedParking.add(vehicle);
-        }else if (vehicle.getVehicleType().equals("xuv")){                          //manoeuvre large cars
+        } else if (vehicle.getVehicleType().equals("xuv")) {                          //manoeuvre large cars
             if (parkingLot1.size() > parkingLot2.size()) {
                 parkingLot2.add(vehicle);
-            } else  parkingLot1.add(vehicle);
-        }else {
+            } else parkingLot1.add(vehicle);
+        } else {
             if (parkingLot1.size() > parkingLot2.size()) {
                 parkingLot2.add(vehicle);
-            } else  parkingLot1.add(vehicle);
+            } else parkingLot1.add(vehicle);
         }
         if (parkingLot1.size() == actualCapacity || parkingLot2.size() == actualCapacity
                 || handicappedParking.size() == actualCapacity) {
             for (ParkingLotObserver observer : observers) {
                 observer.capacityIsFull();
             }
-            throw new ParkingLotException(ParkingLotException.ExceptionType.PARKING_LOT_IS_FULL,"Parking Lot is Full.");
+            throw new ParkingLotException(ParkingLotException.ExceptionType.PARKING_LOT_IS_FULL, "Parking Lot is Full.");
         }
 
     }
@@ -116,14 +121,14 @@ public class ParkingLotSystem<slot> {
     * */
     public void vehicleUnParking(Vehicle vehicle) throws ParkingLotException {
         if (parkingLot1 != null || parkingLot2 != null)
-            throw new ParkingLotException(ParkingLotException.ExceptionType.PARKING_LOT_IS_FULL,"Parking Lot is Full.");
+            throw new ParkingLotException(ParkingLotException.ExceptionType.PARKING_LOT_IS_FULL, "Parking Lot is Full.");
         if (parkingLot1.contains(vehicle)) {
             parkingLot1.remove(vehicle);
-            throw new ParkingLotException(ParkingLotException.ExceptionType.NO_SUCH_VEHICLE,"Parking Lot is Empty");
+            throw new ParkingLotException(ParkingLotException.ExceptionType.NO_SUCH_VEHICLE, "Parking Lot is Empty");
         }
         if (parkingLot2.contains(vehicle)) {
             parkingLot2.remove(vehicle);
-            throw new ParkingLotException(ParkingLotException.ExceptionType.NO_SUCH_VEHICLE,"Parking Lot is Empty");
+            throw new ParkingLotException(ParkingLotException.ExceptionType.NO_SUCH_VEHICLE, "Parking Lot is Empty");
         }
     }
 
@@ -134,14 +139,14 @@ public class ParkingLotSystem<slot> {
      * */
     public boolean isVehicleParked(Vehicle vehicle) {
         for (Vehicle park : parkingLot1) {
-            if (park.equals(vehicle)){
+            if (park.equals(vehicle)) {
                 return true;
             }
             break;
         }
         for (Vehicle park : parkingLot2) {
             if (park.equals(vehicle)) {
-                return  true;
+                return true;
             }
             break;
         }
@@ -166,7 +171,7 @@ public class ParkingLotSystem<slot> {
     public boolean isVehicleUnParked(Vehicle vehicle) {
         if (parkingLot1 == null || parkingLot2 == null)
             return false;
-        for(Vehicle vehicle1 : parkingLot1) {
+        for (Vehicle vehicle1 : parkingLot1) {
             if (vehicle1.equals(vehicle)) {
                 parkingLot1.remove(vehicle);
                 for (ParkingLotObserver observer : observers) {
@@ -175,7 +180,7 @@ public class ParkingLotSystem<slot> {
                 return true;
             }
         }
-        for(Vehicle vehicle1 : parkingLot2) {
+        for (Vehicle vehicle1 : parkingLot2) {
             if (vehicle1.equals(vehicle)) {
                 parkingLot2.remove(vehicle);
                 for (ParkingLotObserver observer : observers) {
@@ -188,12 +193,12 @@ public class ParkingLotSystem<slot> {
     }
 
     /*
-    * @purpose: As driver wants to find the Parked car.
-    *
-    * @params: vehicle as object, finding a vehicle from list by using indexOf vehicles list
-    * */
+     * @purpose: As driver wants to find Spot for parking a Vehicle.
+     *
+     * @params: vehicle as object, finding a vehicle from list by using indexOf vehicles list
+     * */
     public int findingVehicle(Vehicle vehicle) throws ParkingLotException {
-        if (isVehicleParked(vehicle)){
+        if (isVehicleParked(vehicle)) {
             for (Vehicle slotNumber : parkingLot1) {
                 if (slotNumber.equals(vehicle))
                     return parkingLot1.indexOf(slotNumber);
@@ -210,8 +215,15 @@ public class ParkingLotSystem<slot> {
         throw new ParkingLotException(ParkingLotException.ExceptionType.NO_SUCH_VEHICLE,
                 "No Such vehicle in parking lot");
     }
+
+    /*
+     * @purpose: As Police wants to find the vehicle location by using vehicle colours by
+     *               for each and a conditional statement for specific color.
+     *
+     * @params: Passing vehicleColor of Vehicle class, where vehicleColor sets in test cases, gets it from Vehicle Class
+     * */
     public int getVehicleLocationByColor(Vehicle vehicleColor) throws ParkingLotException {
-        for (Vehicle whiteCar: parkingLot1) {
+        for (Vehicle whiteCar : parkingLot1) {
             if (whiteCar.getVehicleColor().equals(vehicleColor))
                 return parkingLot1.indexOf(whiteCar);
         }
@@ -223,27 +235,39 @@ public class ParkingLotSystem<slot> {
             if (whiteCar.getVehicleColor().equals(vehicleColor))
                 return handicappedParking.indexOf(whiteCar);
         }
-        throw new ParkingLotException(ParkingLotException.ExceptionType.NO_SUCH_VEHICLE,"no such vehicle");
+        throw new ParkingLotException(ParkingLotException.ExceptionType.NO_SUCH_VEHICLE, "no such vehicle");
     }
-    public String getBlueToyotaVehicleNumber(Vehicle vehicleBrand ,Vehicle vehicleColor) throws ParkingLotException {
+
+    /*
+     * @purpose: As police wants to check Blue Toyota Vehicles,by comparing vehicle brands and colors using for each
+     *
+     * @params: vehicleBrand & vehicleColor for comparing the Parked vehicles by using conditional statements
+     * */
+    public String getBlueToyotaVehicleNumber(Vehicle vehicleBrand, Vehicle vehicleColor) throws ParkingLotException {
         if (isVehicleParked(vehicle)) {
             if (vehicle.getVehicleBrand().equals(vehicleBrand) && vehicle.getVehicleColor().equals(vehicleColor)) {
-                    for (Vehicle vNumber : parkingLot1) {
-                        if (vNumber.equals(vehicle))
-                            return vNumber.getVehicleNumber();
-                    }
-                    for (Vehicle vNumber : parkingLot2) {
-                        if (vNumber.equals(vehicle))
-                            return vNumber.getVehicleNumber();
-                    }
-                    for (Vehicle vNumber : handicappedParking) {
-                        if (vNumber.equals(vehicle))
-                            return vNumber.getVehicleNumber();
-                    }
+                for (Vehicle vNumber : parkingLot1) {
+                    if (vNumber.equals(vehicle))
+                        return vNumber.getVehicleNumber();
+                }
+                for (Vehicle vNumber : parkingLot2) {
+                    if (vNumber.equals(vehicle))
+                        return vNumber.getVehicleNumber();
+                }
+                for (Vehicle vNumber : handicappedParking) {
+                    if (vNumber.equals(vehicle))
+                        return vNumber.getVehicleNumber();
+                }
             }
         }
-        throw new ParkingLotException(ParkingLotException.ExceptionType.NO_SUCH_VEHICLE,"no such vehicle");
+        throw new ParkingLotException(ParkingLotException.ExceptionType.NO_SUCH_VEHICLE, "no such vehicle");
     }
+
+    /*
+     * @purpose: As police wants to increase Security for Specific Brand vehicles(BMW).
+     *              here, we compare the vehicleBrands and shows the Parking Spot of
+     *                Specific Brand.
+     * @params: vehicleBrand of Vehicle Class used to get comparing by all the elements in the lists */
     public int valetParkingForHigSecurity(Vehicle vehicleBrand) throws ParkingLotException {
         if (isVehicleParked(vehicle)) {
             if (vehicle.getVehicleBrand().equals(vehicleBrand)) {
@@ -264,6 +288,12 @@ public class ParkingLotSystem<slot> {
         throw new ParkingLotException(ParkingLotException.ExceptionType.NO_SUCH_VEHICLE,
                 "No Such vehicle in parking lot");
     }
+
+    /*
+    * @purpose: As police wants to check the Last30 minutes Parked cars,here comparing
+                 with local time and subtracting 30 minutes from localtime.
+    * @Params: LocalTime used to compare the parked vehicle last 30 minutes.
+    **/
     public int getListOfLast30MinutesParkedVehicle(LocalTime time) throws ParkingLotException {
         if (isVehicleParked(vehicle)) {
             for (Vehicle car : parkingLot1) {
@@ -279,8 +309,13 @@ public class ParkingLotSystem<slot> {
                     return handicappedParking.indexOf(car);
             }
         }
-        throw new ParkingLotException(ParkingLotException.ExceptionType.NO_SUCH_VEHICLE,"no such vehicle");
+        throw new ParkingLotException(ParkingLotException.ExceptionType.NO_SUCH_VEHICLE, "no such vehicle");
     }
+
+    /*
+     * @purpose: As police wants to validate vehicle plate numbers as Fraudulent vehicles.
+     * @params: vehicleNumber of string value gets pass and validate with RegexExpression
+     *  */
     public boolean validatingVehicleNumberPlate(String vehicleNumber) {
 
         Pattern pattern = Pattern.compile("^[A-Z]{2}[ -][0-9]{1,2}(?: [A-Z])?(?: [A-Z]*)? [0-9]{4}$");
