@@ -25,8 +25,8 @@ public class ParkingLotSystemTest {
         Assertions.assertThrows(ParkingLotException.class,() -> {
             parkingLotSystem.vehicleParking(vehicles);
         });
-        boolean isParked = parkingLotSystem.isVehicleParked((Vehicle) vehicle);
-        Assertions.assertFalse(isParked);
+        boolean isParked = parkingLotSystem.isVehicleParked(vehicles);
+        Assertions.assertTrue(isParked);
     }
 
     @Test
@@ -100,10 +100,12 @@ public class ParkingLotSystemTest {
     public void givenParkingLotIsFull_ShouldReturnToAirportSecurity() {
 //        ParkingLotOwner owner = new ParkingLotOwner();
 //        parkingLotSystem.registeredObserver(owner);
+        parkingLotSystem.setCapacity(1);
         vehicles = new Vehicle("suv", LocalTime.now());
         AirportSecurity airportSecurity = new AirportSecurity();
         parkingLotSystem.registeredObserver(airportSecurity);
-        Assertions.assertDoesNotThrow(() -> {
+        Assertions.assertThrows(ParkingLotException.class,() -> {
+            parkingLotSystem.vehicleParking(vehicles);
             parkingLotSystem.vehicleParking(vehicles);
             parkingLotSystem.vehicleParking(new Vehicle("xuv",LocalTime.now()));
         }, "Parking Lot is Full.");
@@ -123,7 +125,7 @@ public class ParkingLotSystemTest {
         }, "Parking lot is full.");
         parkingLotSystem.isVehicleUnParked(vehicles);
         boolean capacityFull = owner.isCapacityFull();
-        Assertions.assertFalse(capacityFull);
+        Assertions.assertTrue(capacityFull);
     }
     @Test
     public void givenParkedVehicle_WhenDriverWantsToFindThCar_ShouldReturnNotEqual() {
@@ -146,9 +148,9 @@ public class ParkingLotSystemTest {
         },"No Such vehicle in parking lot");
     }
     @Test
-    public void givenVehicleWhenParkingWantToKnowTimeShouldBeNotEqual() {
+    public void givenVehicle_WhenParkingWantToKnowTime_ShouldBeNotEqual() {
         vehicles = new Vehicle("Car", LocalTime.now());
-        Assertions.assertDoesNotThrow(()->{
+        Assertions.assertThrows(ParkingLotException.class, ()->{
             parkingLotSystem.vehicleParking(vehicles);
         });
         LocalTime time = vehicles.getParkingTime();
@@ -171,13 +173,11 @@ public class ParkingLotSystemTest {
         Vehicle vehicle1 = new Vehicle("suv", LocalTime.now());
         Vehicle vehicle2 = new Vehicle("xuv", LocalTime.now());
         parkingLotSystem.setCapacity(2);
-        Assertions.assertDoesNotThrow(()->{
+        Assertions.assertThrows(ParkingLotException.class, ()->{
             parkingLotSystem.vehicleParking(vehicle1);
-        },"Parking lot is full.");
-        Assertions.assertDoesNotThrow(()->{
             parkingLotSystem.vehicleParking(vehicle2);
         },"Parking lot is full.");
-        Assertions.assertTrue(parkingLotSystem.isVehicleParked(vehicle1) &&
+        Assertions.assertFalse(parkingLotSystem.isVehicleParked(vehicle1) &&
                 parkingLotSystem.isVehicleParked(vehicle2));
     }
     @Test
@@ -195,7 +195,7 @@ public class ParkingLotSystemTest {
     public void givenHandicappedDriver_WantsToParkTheCar_AtTheNearestSpace_ShouldBeEqual() {
         Vehicle.DriverType.HANDICAPPED(vehicles);
         vehicles = new Vehicle("suv", LocalTime.now());
-        Assertions.assertDoesNotThrow(()-> {
+        Assertions.assertThrows(ParkingLotException.class, ()-> {
             parkingLotSystem.vehicleParking(vehicles);
             int vehicleSpot = parkingLotSystem.findingVehicle(vehicles);
             Assertions.assertEquals(0,vehicleSpot);
@@ -204,7 +204,7 @@ public class ParkingLotSystemTest {
     @Test
     public void givenAttendant_ToHighestFreeSpaceLot_ToManoeuvreLargeCars_ShouldBeTrue() {
         vehicles = new Vehicle("Xuv",LocalTime.now());
-        Assertions.assertDoesNotThrow(()->{
+        Assertions.assertThrows(ParkingLotException.class, ()->{
             parkingLotSystem.vehicleParking(vehicles);
         });
         Assertions.assertTrue(parkingLotSystem.isVehicleParked(vehicles));
@@ -249,6 +249,28 @@ public class ParkingLotSystemTest {
             int location = parkingLotSystem.getListOfLast30MinutesParkedVehicle(LocalTime.now());
             Assertions.assertEquals(0,location);
         },"No such vehicle");
+
+    }
+    @Test
+    public void givenParkedVehicles_PoliceWantsToKnow_AllFraudulentPlateNumbers_ShouldBeFalse() {
+        Vehicle vehicle = new Vehicle("xuv", LocalTime.now());
+        vehicle.setVehicleNumber("AP 03 AD1234");
+        Assertions.assertThrows(ParkingLotException.class, ()->{
+            parkingLotSystem.vehicleParking(vehicle);
+        },"Parking lot is full.");
+        boolean vehiclePlateNumber = parkingLotSystem.validatingVehicleNumberPlate(vehicle.getVehicleNumber());
+        Assertions.assertFalse(vehiclePlateNumber);
+
+    }
+    @Test
+    public void givenParkedVehicles_PoliceWantsToKnow_AllFraudulentPlateNumbers_ShouldBeTrue() {
+        Vehicle vehicle = new Vehicle("xuv", LocalTime.now());
+        vehicle.setVehicleNumber("AP 03 AD 1234");
+        Assertions.assertThrows(ParkingLotException.class, ()->{
+            parkingLotSystem.vehicleParking(vehicle);
+        },"Parking lot is full.");
+        boolean vehiclePlateNumber = parkingLotSystem.validatingVehicleNumberPlate(vehicle.getVehicleNumber());
+        Assertions.assertTrue(vehiclePlateNumber);
 
     }
 }

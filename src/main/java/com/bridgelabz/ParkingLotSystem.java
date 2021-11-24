@@ -12,6 +12,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class ParkingLotSystem<slot> {
 
@@ -96,7 +98,8 @@ public class ParkingLotSystem<slot> {
                 parkingLot2.add(vehicle);
             } else  parkingLot1.add(vehicle);
         }
-        if (parkingLot1.size() == actualCapacity && parkingLot2.size() == actualCapacity) {
+        if (parkingLot1.size() == actualCapacity || parkingLot2.size() == actualCapacity
+                || handicappedParking.size() == actualCapacity) {
             for (ParkingLotObserver observer : observers) {
                 observer.capacityIsFull();
             }
@@ -277,6 +280,16 @@ public class ParkingLotSystem<slot> {
             }
         }
         throw new ParkingLotException(ParkingLotException.ExceptionType.NO_SUCH_VEHICLE,"no such vehicle");
+    }
+    public boolean validatingVehicleNumberPlate(String vehicleNumber) {
+
+        Pattern pattern = Pattern.compile("^[A-Z]{2}[ -][0-9]{1,2}(?: [A-Z])?(?: [A-Z]*)? [0-9]{4}$");
+        Matcher matcher = pattern.matcher(vehicleNumber);
+        boolean value = matcher.matches();
+        if ((vehicleNumber).isEmpty())
+            return false;
+        return value;
+
     }
 
 
