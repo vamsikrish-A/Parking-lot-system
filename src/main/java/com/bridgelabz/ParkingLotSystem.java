@@ -221,6 +221,25 @@ public class ParkingLotSystem<slot> {
         }
         throw new ParkingLotException(ParkingLotException.ExceptionType.NO_SUCH_VEHICLE,"no such vehicle");
     }
+    public String getBlueToyotaVehicleNumber(Vehicle vehicleBrand ,Vehicle vehicleColor) throws ParkingLotException {
+        if (isVehicleParked(vehicle)) {
+            if (vehicle.getVehicleBrand().equals(vehicleBrand) && vehicle.getVehicleColor().equals(vehicleColor)) {
+                    for (Vehicle vNumber : parkingLot1) {
+                        if (vNumber.equals(vehicle))
+                            return vNumber.getVehicleNumber();
+                    }
+                    for (Vehicle vNumber : parkingLot2) {
+                        if (vNumber.equals(vehicle))
+                            return vNumber.getVehicleNumber();
+                    }
+                    for (Vehicle vNumber : handicappedParking) {
+                        if (vNumber.equals(vehicle))
+                            return vNumber.getVehicleNumber();
+                    }
+            }
+        }
+        throw new ParkingLotException(ParkingLotException.ExceptionType.NO_SUCH_VEHICLE,"no such vehicle");
+    }
 
 
 }

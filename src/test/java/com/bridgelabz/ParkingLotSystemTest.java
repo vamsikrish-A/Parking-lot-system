@@ -219,4 +219,16 @@ public class ParkingLotSystemTest {
             Assertions.assertEquals(0,carLocation);
         },"no such vehicle");
     }
+    @Test
+    public void givenParkedCars_policeWantsToKnow_LocationOfBlueColoredToyotaCars() {
+        Vehicle vehicle = new Vehicle("xuv", LocalTime.now());
+        vehicle.setVehicleNumber("AP 03 BH 7894");
+        vehicle.setVehicleBrand("TOYOTA");
+        vehicle.setVehicleColor("Blue");
+        Assertions.assertThrows(ParkingLotException.class,()->{
+            parkingLotSystem.vehicleParking(vehicle);
+            String vehicleNumber = parkingLotSystem.getBlueToyotaVehicleNumber(vehicle,vehicle);
+            Assertions.assertEquals(vehicleNumber,vehicle.getVehicleNumber());
+        },"no such vehicle");
+    }
 }
